@@ -32,12 +32,12 @@ MariaDB (5+) nodig. Optioneel kan Cron of een vergelijkbare toepassing
 worden ingezet om de database automatisch periodiek bij te werken.
 
 URLs:
-Mozilla Firefox: https://www.mozilla.org/firefox
-Chromium: https://www.chromium.org
-Chromium (Windows build): http://chromium.woolyss.com
-PHP: http://php.net
-MySQL: https://www.mysql.com
-MariaDB: https://mariadb.org
+* Mozilla Firefox: https://www.mozilla.org/firefox
+* Chromium: https://www.chromium.org
+* Chromium (Windows build): http://chromium.woolyss.com
+* PHP: http://php.net
+* MySQL: https://www.mysql.com
+* MariaDB: https://mariadb.org
 
 
 # 2. Installatie
@@ -64,9 +64,10 @@ de update in een keer uit te voeren kunnen de tijdlimieten in
 config.cfg.php worden aangepast.
 
 Voorbeeld crontab:
+```crontab
 # verkeersbordenkaart update iedere uur op 47 minuten na het hele uur
 47 * * * * php -f /var/www/html/verkeersbordenkaart/cronjob.php > /var/www/html/verkeersbordenkaart/cronresult.txt
-
+```
 
 # 4. Licentie
 
@@ -97,7 +98,7 @@ You should have received a copy of the GNU General Public License
 along with Verkeersbordenkaart. If not, see <http://www.gnu.org/licenses/>.
 
 
-5. Verkrijgen van de broncode
+# 5. Verkrijgen van de broncode
 
 De broncode van Verkeersbordenkaart is gepubliceerd op GitHub.
 https://github.com/jaspervries/verkeersbordenkaart
