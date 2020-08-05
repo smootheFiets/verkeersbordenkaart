@@ -50,7 +50,7 @@ if ($updatestate['finished'] == 0) {
 else {
 	//script is klaar
 	//als te vroeg om opnieuw te beginnen, exit
-	if (($res['starttime'] + $cfg_runonce_limit) > $time_start) {
+	if (($updatestate['starttime'] + $cfg_runonce_limit) > $time_start) {
 		echo 'no allowed to start yet' . PHP_EOL;
 		echo $res['starttime'] . PHP_EOL;
 		echo $time_start . PHP_EOL;
