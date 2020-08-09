@@ -116,6 +116,7 @@ while(TRUE) {
 			$qry .= ", `offset` = '" . $updatestate['offset'] . "'";
 		}
 		mysqli_query($db['link'], $qry);
+		exit;
 	}
 	else {
 		//geen error, verwerk data
