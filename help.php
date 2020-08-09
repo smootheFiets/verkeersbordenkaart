@@ -3,6 +3,8 @@
  	assetwebsite - viewer en aanvraagformulier voor verkeersmanagementassets
     Copyright (C) 2016-2019 Gemeente Den Haag, Netherlands
     Developed by Jasper Vries
+    Modified for Verkeersbordenkaart
+    Copyright (C) 2020 Jasper Vries
  
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,8 +19,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-session_start();
-include_once('getuserdata.inc.php');
+//session_start();
+//include_once('getuserdata.inc.php');
 include('dbconnect.inc.php');
 
 //bepaal help topic

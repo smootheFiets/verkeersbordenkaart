@@ -19,8 +19,8 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-session_start();
-include_once('getuserdata.inc.php');
+//session_start();
+//include_once('getuserdata.inc.php');
 ?>
 <!DOCTYPE html>
 <html>
