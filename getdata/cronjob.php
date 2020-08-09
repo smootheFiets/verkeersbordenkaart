@@ -66,6 +66,7 @@ function curl_get_contents($url) {
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
 	curl_setopt($ch, CURLOPT_CAINFO, 'ndw-nu.pem'); //temp fix
+	//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //if temp fix above doesn't work
 	curl_setopt($ch, CURLOPT_URL, $url);
 	$contents = curl_exec($ch);
 	if ($contents === FALSE) {
@@ -119,6 +120,17 @@ while(TRUE) {
 	else {
 		//geen error, verwerk data
 		$json = json_decode($data[1]);
+
+		//if json is empty, then there is nothing to do
+		if (empty($json)) {
+			$qry = "UPDATE `updatelog` SET
+			`finished` = 1
+			ORDER BY `id` DESC
+			LIMIT 1";
+			mysqli_query($db['link'], $qry);
+			exit;
+		}
+
 		foreach ($json as $item) {
 			//var_dump($item); exit;
 			//TODO check data contents
@@ -161,16 +173,23 @@ while(TRUE) {
 			if (preg_match('#\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z#', $item->publication_timestamp)) {
 				//alleen bijwerken als timestamp voldoet aan syntaxis
 				$updatestate['offset'] = $item->publication_timestamp;
+				$lastid = $item->id;
 			}
 			
 		}
-
-
-		//TODO: als geen nieuwe data meer, dan 'finished' in updatelog zetten
-		//het is nog ff de vraag hoe je kan weten dat er geen nieuwe data meer is
-		//daarna script beeindigen
-
-		
+		//check if we have a duplicate last id
+		if (isset($previouslastid) && ($previouslastid == $lastid)) {
+			//we've reached the last item, nothing more to do
+			$qry = "UPDATE `updatelog` SET
+			`finished` = 1
+			ORDER BY `id` DESC
+			LIMIT 1";
+			mysqli_query($db['link'], $qry);
+			exit;
+		}
+		else {
+			$previouslastid = $lastid;
+		}
 	}
 
 	//exit;
@@ -185,7 +204,6 @@ while(TRUE) {
 		`starttime` = " . $time_start . ",
 		`offset` = '" . $updatestate['offset'] . "'";
 		mysqli_query($db['link'], $qry);
-
 		exit;
 	}
 }
