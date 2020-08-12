@@ -39,7 +39,8 @@ if ($_GET['get'] == 'popup') {
 	//als er een of meer rijen zijn
 	if (mysqli_num_rows($res) > 0) {
 		$data = mysqli_fetch_assoc($res);
-		$html = '<table>';
+		$html = '<img src="image.php?i=' . $data['rvv_code'] . '" style="max-width: 64px; max-height: 64px;">';
+		$html .= '<table>';
 		foreach ($data as $k => $v) {
 			$html .= '<tr><th>';
 			$html .= htmlspecialchars($k);
@@ -70,6 +71,7 @@ elseif ($_GET['data'] == 'details') {
 	if (mysqli_num_rows($res) > 0) {
 		$html = '<div style="float:left; margin-left: 8px; max-width: calc(100% - 600px);">';
 		$data = mysqli_fetch_assoc($res);
+		$html .= '<img src="image.php?i=' . $data['rvv_code'] . '" style="max-width: 64px; max-height: 64px;">';
 		//tabel
 		$html .= '<table>';
 		foreach ($data as $k => $v) {
@@ -102,7 +104,7 @@ elseif ($_GET['data'] == 'details') {
 		$html .= '<div style="clear:both;"></div>';
 
 		$json['html'] = $html;
-		$json['title'] = htmlspecialchars('Verkeersbord ' . $data['id'] . ' ' . $data['rvv_code']);
+		$json['title'] = htmlspecialchars('Verkeersbord ' . $data['id'] . ' - ' . $data['rvv_code']);
 	}
 	else {
 		$json['html'] = '<p class="error">Geen detailinformatie gevonden</p>';
@@ -123,10 +125,11 @@ else {
 			'code' => $data['code'],
 			'lat' => (float) $data['latitude'],
 			'lon' => (float) $data['longitude'],
-			'heading' => 0,
-			'icon' => 1,
-			'itype' => 0,
-			'status' => 1);
+			//'heading' => 0,
+			//'icon' => 1,
+			//'itype' => 0,
+			//'status' => 1
+		);
 		}
 	}
 }

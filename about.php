@@ -43,13 +43,11 @@ include('menu.inc.php');
 <div id="content">
     <h1>Over Verkeersbordenkaart</h1>
     <p>Verkeersbordenkaart is een grafische interface voor het bekijken van de open data "Verkeersborden" van <a href="https://docs.ndw.nu/api/">https://docs.ndw.nu/api/</a>. Deze dataset bevat informatie en locaties van zo'n drie miljoen RVV-borden uit heel Nederland.</p>
-    <p>Verkeersbordenkaart kopieert de data uit de dataset naar een lokale database en presenteert de inhoud van deze database op een kaartondergrond. De data die gepresenteerd wordt in Verkeersbordenkaart wordt ieder uur geactualiseerd.</p>
+    <p>Verkeersbordenkaart kopieert de data uit de dataset naar een lokale database en presenteert de inhoud van deze database op een kaartondergrond. De data die gepresenteerd wordt in Verkeersbordenkaart wordt iedere dag geactualiseerd.</p>
     <p>Verkeersbordenkaart is gemaakt door Jasper Vries. Er wordt geen aansprakelijkheid aanvaard voor compleetheid, juistheid, geschiktheid en correcte werking van deze website.</p>
     
     <h2>Toekomstige functionaliteiten</h2>
     <p>Melding tonen wanneer niet ver genoeg is ingezoomd.</p>
-    <p>RVV-code bij pictogram op kaart tonen.</p>
-    <p>Afbeeldingen van verkeersborden worden direct geladen vanaf de open data server, wanneer deze beschikbaar zijn.</p>
 
     <h2>Broncode</h2>
     <p>De broncode van Verkeersbordenkaart is gepubliceerd op <a href="https://github.com/jaspervries/verkeersbordenkaart/">GitHub</a>.</p>

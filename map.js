@@ -239,7 +239,7 @@ function loadMarkers(layer) {
 				else {*/
 					marker = L.marker([v.lat, v.lon], {
 						x_id: v.id,
-						icon: L.icon({	iconUrl: 'style/milemarker.png', iconSize: [4,4] }),
+						icon: L.icon({	iconUrl: 'image.php?i=' + v.code, iconSize: [16,16] }),
 						//zIndexOffset: ((layer == 2) ? 1000: 0), //TODO manage this from database, this assumes layer 2 is CAM layer, which is the case in the default install
 						//rotationAngle: v.heading,
 						//rotationOrigin: 'center',
