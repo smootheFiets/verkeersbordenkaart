@@ -52,7 +52,7 @@ else {
 	//als te vroeg om opnieuw te beginnen, exit
 	if (($updatestate['starttime'] + $cfg_runonce_limit) > $time_start) {
 		echo 'no allowed to start yet' . PHP_EOL;
-		echo $res['starttime'] . PHP_EOL;
+		echo $updatestate['starttime'] . PHP_EOL;
 		echo $time_start . PHP_EOL;
 		exit;
 	}
@@ -65,8 +65,7 @@ function curl_get_contents($url) {
 	curl_setopt($ch, CURLOPT_HEADER, FALSE);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-	curl_setopt($ch, CURLOPT_CAINFO, 'ndw-nu.pem'); //temp fix
-	//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); //if temp fix above doesn't work
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $cfg_resource['CURLOPT_SSL_VERIFYPEER']);
 	curl_setopt($ch, CURLOPT_URL, $url);
 	$contents = curl_exec($ch);
 	if ($contents === FALSE) {
@@ -181,10 +180,20 @@ while(TRUE) {
 		//check if we have a duplicate last id
 		if (isset($previouslastid) && ($previouslastid == $lastid)) {
 			//we've reached the last item, nothing more to do
-			$qry = "UPDATE `updatelog` SET
-			`finished` = 1
-			ORDER BY `id` DESC
-			LIMIT 1";
+			if ($updatestate['finished'] == 0) {
+				$qry = "UPDATE `updatelog` SET
+				`lastupdate` = " . time() . ",
+				`finished` = 1
+				ORDER BY `id` DESC
+				LIMIT 1";
+			}
+			else {
+				$qry = "INSERT INTO `updatelog` SET
+				`lastupdate` = " . time() . ",
+				`starttime` = " . $time_start . ",
+				`offset` = '" . $updatestate['offset'] . "',
+				`finished` = 1";
+			}
 			mysqli_query($db['link'], $qry);
 			exit;
 		}

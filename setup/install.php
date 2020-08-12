@@ -31,6 +31,7 @@ $db[\'db\'] = \'verkeersborden\';
 
 //Resources
 $cfg_resource[\'API\'] = \'https://data.ndw.nu/api/rest/static-road-data/traffic-signs/v1/events\';
+$cfg_resource[\'CURLOPT_SSL_VERIFYPEER\'] = TRUE;
 
 //Tijdlimieten (seconden)
 $cfg_runtime_limit = 160; //maximale tijd die het script actief mag zijn
