@@ -30,7 +30,7 @@ require('functions/bounds_to_sql.php');
 if ($_GET['get'] == 'popup') {
 	$json = array('html' => '');
 	//query om inhoud van tabel te selecteren
-	$qry = "SELECT `id`, `type`, `rvv_code`, `text_signs`, `location.placement`, `location.side`, `location.road.name`, `location.road.type`, `location.road.number`, `location.county.name`, `details.first_seen`, `details.last_seen`, `details.removed`
+	$qry = "SELECT `id`, `type`, `rvv_code`, `text_signs`, `location.placement`, `location.side`, `location.road.name`, `location.road.type`, `location.road.number`, `location.county.name`, `details.first_seen`, `details.last_seen`, `details.removed`, `location.wgs84.latitude`, `location.wgs84.longitude`
 	FROM `verkeersborden`
 	WHERE `id` = '" . mysqli_real_escape_string($db['link'], $_GET['id']) . "'";
 	$qry .= " LIMIT 1";
