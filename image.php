@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with Verkeersbordenkaart. If not, see <http://www.gnu.org/licenses/>.
 */
 
-$image = 'images/' . preg_replace('/[[:^alnum:]]/i', '', $_GET['i']) . '.png';
+$image = 'images/' . preg_replace('/[^[:alnum:\()]]/i', '', $_GET['i']) . '.png';
 
 
 if (file_exists($image)) {
