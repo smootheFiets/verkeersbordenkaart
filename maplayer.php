@@ -50,6 +50,7 @@ if ($_GET['get'] == 'popup') {
 		}
 		$html .= '</table>';
 		$data['heading'] = '0';
+		$html .= '<p><a id="popup_details">Details bekijken</a></p>';
 		$html .= '<p><a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p>';
 		$json['html'] = $html;
 	}

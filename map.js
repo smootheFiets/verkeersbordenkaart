@@ -68,6 +68,7 @@ var tileLayers = [
 var onloadCookie;
 var markers = {};
 var maplayers = {};
+var oms;
 
 /*
 * Initialize the map on page load
@@ -75,6 +76,10 @@ var maplayers = {};
 function initMap() {
 	//create map
 	map = L.map('map');
+	oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
+	oms.addListener('click', function(marker) {
+		openMapPopup(marker);
+	});
 	//add methods
 	map.on('load', function() {
 		$('#map-loading').hide();
@@ -245,21 +250,17 @@ function loadMarkers(layer) {
 						//rotationOrigin: 'center',
 						title: v.code
 					});
-					marker.on('click', function(e) {
-						openMapPopup(e, v.id);
-					});
-					marker.on('contextmenu', function(e) {
-						openDetailsWindow(v.id);
-					});
 				/*}*/
 				marker.addTo(map);
 				markers[layer].push(marker);
+				oms.addMarker(marker);
 			}
 		});
 
 		//remove markers that should not be drawn (both out of bound and as a result of filtering)
 		for (var i = markers[layer].length - 1; i >= 0; i--) {
 			if (visibleMarkerIds.indexOf(markers[layer][i].options.x_id) === -1) {
+				oms.removeMarker(markers[layer][i]);
 				markers[layer][i].remove();
 				markers[layer].splice(i, 1);
 				
@@ -273,18 +274,19 @@ function loadMarkers(layer) {
 /*
 * Load marker's popup content
 */
-function openMapPopup(e, id) {
-	$.getJSON('maplayer.php', { get: 'popup', id: id })
+function openMapPopup(marker) {
+	console.log(marker);
+	$.getJSON('maplayer.php', { get: 'popup', id: marker.options.x_id })
 	.done( function(json) {
-        e.target.bindPopup(json.html).openPopup();
-		e.target._popup.update();
+        marker.bindPopup(json.html).openPopup();
+		marker._popup.update();
 		//bind onclick to details window link
 		$( "#popup_details" ).bind( "click", function() {
-			openDetailsWindow(id);
+			openDetailsWindow(marker.options.x_id);
 		  });
 	})
 	.fail( function() {
-		e.target.bindPopup('Fout: kan gegevens niet laden').openPopup();
+		marker.bindPopup('Fout: kan gegevens niet laden').openPopup();
 	});
 }
 
