@@ -201,6 +201,13 @@ function updateMapLayers() {
 	}
 	else {
 		$('#map-nolayersactive').hide();
+		//show insufficient zoom warning
+		if (map.getZoom() <= 14) {
+			$('#map-zoomwarning').show();
+		}
+		else {
+			$('#map-zoomwarning').hide();
+		}
 	}
 }
 

@@ -75,6 +75,9 @@ include('dbconnect.inc.php');
 <div id="map-nolayersactive">
     <span class="info">Selecteer een kaartlaag in het menu aan de rechterzijde.</span>
 </div>
+<div id="map-zoomwarning">
+    <span class="warning">Zoom verder in om verkeersborden te bekijken.</span>
+</div>
 
 <?php
 include('menu.inc.php');

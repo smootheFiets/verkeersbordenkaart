@@ -310,7 +310,16 @@ img.map-style-oldskool {
 	color: #FFF;
 	border-radius: 4px;
 }
-#map-nolayersactive {
+#map-nolayersactive, #map-zoomwarning {
+	display: none;
+	z-index: 85;
+	position: absolute;
+	left: 0;
+	top: 10%;
+	width: 100%;
+	text-align: center;
+}
+#map-zoomwarning {
 	display: none;
 	z-index: 85;
 	position: absolute;
