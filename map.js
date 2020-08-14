@@ -198,6 +198,7 @@ function updateMapLayers() {
 	//show no-layer activated message
 	if (num_activelayers == 0) {
 		$('#map-nolayersactive').show();
+		$('#map-zoomwarning').hide();
 	}
 	else {
 		$('#map-nolayersactive').hide();
