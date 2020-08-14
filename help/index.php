@@ -26,5 +26,9 @@
 <h1>Kaartachtergrond en -weergave</h1>
 <p>Er zijn verschillende kaartachtergronden beschikbaar die naar wens kunnen worden gekozen. Hierbij is het ook mogelijk om de weergave van de kaart aan te passen. </p>
 
+<h1>Maximumsnelheden en richtingsborden</h1>
+<p>Voor verkeersborden die de maximumsnelheid aangeven, wordt niet de correcte snelheid getoond in het pictogram van het bord. Dit komt omdat de betreffende informatie niet in de brondata aanwezig is. Daarom wordt overal een pictogram van een bord met maximumsnelheid 50 getoond.</p>
+<p>Iets soortgelijks geldt voor borden die een (rij)richting aangeven. De daadwerkelijke (rij)richting die door het bord wordt aangegeven is niet in de brondata aanwezig. Daarom wordt een generiek pictogram voor een bord van het betreffende type getoond.</p>
+
 <h1>Google Street View&trade;</h1>
 <p>Google Street View&trade; kan ook worden geopend door met de rechtermuisknop op de kaart te klikken. Er opent dan een popup met een link naar Google Street View&trade;. Er is geen check of er daadwerkelijk Street View&trade; op de beoogde locatie beschikbaar is. In dat geval zal Street View&trade; op de dichtstbijzijnde locatie worden geopend, of kan Street View&trade; niet worden geopend en blijft het venster zwart.</p>
