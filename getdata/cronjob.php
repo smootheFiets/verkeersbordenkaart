@@ -58,14 +58,15 @@ else {
 	}
 }
 
-function curl_get_contents($url) {
+function curl_get_contents($url, $verifyPeer) {
 	$error = 0;
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
 	curl_setopt($ch, CURLOPT_HEADER, FALSE);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $cfg_resource['CURLOPT_SSL_VERIFYPEER']);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verifyPeer);
+	//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, TRUE);
 	curl_setopt($ch, CURLOPT_URL, $url);
 	$contents = curl_exec($ch);
 	if ($contents === FALSE) {
@@ -98,10 +99,11 @@ while(TRUE) {
 
 	//haal data van API
 	$url = $cfg_resource['API'];
+	$verifyPeer = $cfg_resource['CURLOPT_SSL_VERIFYPEER'];
 	if (!empty($updatestate)) {
 		$url .= '?offset=' . $updatestate['offset'];
 	}
-	$data = curl_get_contents($url);
+	$data = curl_get_contents($url, $verifyPeer);
 
 	//verwerk api error
 	if ($data[0] == 1) {
