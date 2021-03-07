@@ -51,9 +51,10 @@ if ($_GET['get'] == 'popup') {
 		$html .= '</table>';
 		$data['heading'] = '0';
 		$html .= '<p><a id="popup_details">Details bekijken</a></p>';
-		$html .= '<p><a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">Open locatie in OpenStreetMap</a>';
-		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)</p>';
-		$html .= '<p><a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p>';
+		$html .= '<p>Open locatie in <a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">OpenStreetMap</a>';
+		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
+		$html .= ', <a href="https://www.mapillary.com/app/?z=18&lat=' . $data['location.wgs84.latitude'] . '&lng=' . $data['location.wgs84.longitude'] . '" target="_blank">Mapillary</a></p>';
+		$html .= '<p>Open locatie in <a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Google Street View&trade;</a></p>';
 		$json['html'] = $html;
 	}
 	else {
@@ -97,11 +98,12 @@ elseif ($_GET['data'] == 'details') {
 		$html .= '	<div id="minimap" style="width: 400px; height: 400px;"></div>';
 
 		// OSM link
-		$html .= '<p><a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">Open locatie in OpenStreetMap</a>';
-		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)</p>';		
+		$html .= '<p>Open locatie in <a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">OpenStreetMap</a>';
+		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
+		$html .= ', <a href="https://www.mapillary.com/app/?z=18&lat=' . $data['location.wgs84.latitude'] . '&lng=' . $data['location.wgs84.longitude'] . '" target="_blank">Mapillary</a></p>';
 		//streetview link
 		$data['heading'] = '0';
-		$html .= '<p><a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p>';
+		$html .= '<p>Open locatie in <a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Google Street View&trade;</a></p>';
 
 		//preview image
 		$html .= '<p><img src="' . $data['details.image'] . '" style="max-width: 400px; max-heigth: 400px;></p>';

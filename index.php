@@ -31,6 +31,8 @@ include('dbconnect.inc.php');
 <link rel="stylesheet" type="text/css" href="bundled/leaflet/leaflet.css">
 <link rel="stylesheet" type="text/css" href="style/style.css">
 <link rel="icon" type="image/png" href="favicon.png">
+<iframe name="hiddenIframe" style="position: absolute;width:0;height:0;border:0;"></iframe>
+<!--For JOSM remote-control: shouldn't open a new tab, link to hidden Iframe (concect copied from Osmose) -->
 <script src="bundled/jquery/jquery.min.js"></script>
 <script src="bundled/jquery-ui/jquery-ui.min.js"></script>
 <script src="bundled/js-cookie/js.cookie.min.js"></script>
