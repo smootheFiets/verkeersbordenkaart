@@ -160,6 +160,8 @@ while(TRUE) {
 			`text_signs` = '" . mysqli_real_escape_string($db['link'], json_encode($item->text_signs)) . "',
 			`location.wgs84.latitude` = '" . mysqli_real_escape_string($db['link'], $item->location->wgs84->latitude) . "',
 			`location.wgs84.longitude` = '" . mysqli_real_escape_string($db['link'], $item->location->wgs84->longitude) . "',
+			`wgs84` = geomfromtext('Point(" . mysqli_real_escape_string($db['link'], $item->location->wgs84->latitude) .
+			                            " " . mysqli_real_escape_string($db['link'], $item->location->wgs84->longitude) . ")'),
 			`location.rd.x` = '" . mysqli_real_escape_string($db['link'], $item->location->rd->x) . "',
 			`location.rd.y` = '" . mysqli_real_escape_string($db['link'], $item->location->rd->y) . "',
 			`location.placement` = '" . mysqli_real_escape_string($db['link'], $item->location->placement) . "',
