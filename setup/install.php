@@ -95,6 +95,7 @@ else {
 	else echo 'did not create table `verkeersborden`'.PHP_EOL;
 	echo mysqli_error($db['link']).PHP_EOL;
 
+	include('addindex.php');
 
 	$qry = "CREATE TABLE IF NOT EXISTS `updatelog`
 	(
