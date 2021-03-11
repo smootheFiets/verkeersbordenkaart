@@ -151,6 +151,8 @@ while(TRUE) {
 			// text_signs is MYSQL TINYTEXT, max 255 characters. Crop any excess characters to avoid error:
 			$text255 = substr(json_encode($item->text_signs),1,-1); # strip starting and trailing "
 			$text255 = '"' . substr($text255,0,253) . '"';
+			// location.side is sometimes 'bord.schouw onbekend', setting to 'X' (one-char limit)
+			if (strlen( $item->location->side ) > 1) $item->location->side='X';
 
 			$contents = "`type` = '" . mysqli_real_escape_string($db['link'], $item->type) . "',
 			`schema_version` = '" . mysqli_real_escape_string($db['link'], $item->schema_version) . "',
