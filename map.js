@@ -119,6 +119,9 @@ function initMap() {
 	if (typeof centeratid !== 'undefined') {
 	    centerMapAtId(centeratid);
 	}
+        if ( (typeof parms['lat'] !== 'undefined') && (typeof parms['lng'] != 'undefined') ) {
+	    centerMapAtCoords(parms);
+	}
 }
 
 /*
@@ -327,6 +330,20 @@ function centerMapAtId(id) {
 		map.setView([json['latitude'], json['longitude']], 16);
 	        setMapCookie();
 	});
+}
+
+/*
+* center map at coordinates passed in URL
+*/
+function centerMapAtCoords(parms){
+    if ( typeof parms['z'] !== 'undefined' ){
+	var zoom = parseInt(parms['z']);
+    } else {
+	var zoom = 16;
+    };
+    // needs more error checking / sanitizing
+    map.setView([ parms['lat'], parms['lng'] ], zoom);
+    setMapCookie();
 }
 
 /*
