@@ -113,10 +113,11 @@ function initMap() {
 	//modify some map controls
 	map.zoomControl.setPosition('topleft');
 	L.control.scale().addTo(map);
-	//set map position from url var
-	var centeratid = getUrlVars()['id'];
+        //set map position from url var
+        var parms = getUrlVars();
+        var centeratid = parms['id'];
 	if (typeof centeratid !== 'undefined') {
-		centerMapAtId(centeratid);
+	    centerMapAtId(centeratid);
 	}
 }
 
@@ -318,13 +319,13 @@ function centerMapAtId(id) {
 	//get coordinates from database
 	$.getJSON('maplayer.php', { get: 'coordinates', id: id })
 	.done( function(json) {
-		//enable layer if necessary
-		maplayers[json['layer']].active = true;
-		$('#map-layer-' + json['layer']).prop('checked', true);
-		updateMapLayers();
-		//center map and set zoom
+		////enable layer if necessary
+		//maplayers[json['layer']].active = true;
+		//$('#map-layer-' + json['layer']).prop('checked', true);
+		//updateMapLayers();
+	        //center map and set zoom
 		map.setView([json['latitude'], json['longitude']], 16);
-		setMapCookie();
+	        setMapCookie();
 	});
 }
 

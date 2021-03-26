@@ -61,6 +61,7 @@ if ($_GET['get'] == 'popup') {
 		$json['html'] = '<p class="error">Geen detailinformatie gevonden' . $qry .'</p>';
 	}
 }
+
 //details window
 elseif ($_GET['data'] == 'details') {
 	$json = array('html' => '', 'title' => '');
@@ -141,6 +142,22 @@ else {
 		}
 	}
 }
+
+// for centerMapAtID
+if ($_GET['get'] == 'coordinates') {
+  $qry = "SELECT `location.wgs84.latitude` AS `latitude`, `location.wgs84.longitude` AS `longitude` FROM `verkeersborden`
+	WHERE `id` = '" . mysqli_real_escape_string($db['link'], $_GET['id']) . "'";
+  $qry .= " LIMIT 1";
+  //voer query uit
+  $res = mysqli_query($db['link'], $qry);  
+  while ($data = mysqli_fetch_assoc($res)) {
+    $json = array (
+		   latitude =>  (float) $data['latitude'],
+		   longitude=>  (float) $data['longitude'],
+		   );
+  }
+}
+
 
 header('Content-Type: application/json');
 echo json_encode($json);
