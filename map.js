@@ -342,13 +342,7 @@ function centerMapAtId(id) {
 * center map at coordinates passed in URL
 */
 function centerMapAtCoords(parms){
-    if ( typeof parms['z'] !== 'undefined' ){
-	var zoom = parseInt(parms['z']);
-    } else {
-	var zoom = 16;
-    };
-    // needs more error checking / sanitizing
-    map.setView([ parms['lat'], parms['lng'] ], zoom);
+    map.setView([ parseFloat(parms['lat']), parseFloat(parms['lng']) ], Math.round(parseFloat(parms['z'])));
     setMapCookie();
 }
 
