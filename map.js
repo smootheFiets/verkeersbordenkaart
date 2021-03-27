@@ -91,10 +91,10 @@ function initMap() {
 		updateMapLayers();
 	});
 	map.on('contextmenu', function(e) {
-		console.log(e);
+	        console.log(e);
 		L.popup()
 		.setLatLng(e.latlng)
-		.setContent('<h1>' + e.latlng.lat.toFixed(6) + ',' + e.latlng.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;layer=c&cbll=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p> <p><a href="' + location.protocol.concat("//").concat(window.location.host) + '/html/verkeersbordenkaart/index.php?lat='+ e.latlng.lat.toFixed(6) +'&lng='+ e.latlng.lng.toFixed(6) + '" target="_blank">Permalink naar deze locatie</a></p>')
+		.setContent('<h1>' + e.latlng.lat.toFixed(6) + ',' + e.latlng.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;layer=c&cbll=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p> <p><a href="' + getPermalink(e,map) + '" target="_blank">Permalink naar deze locatie</a></p>')
 		.openOn(map);
 	})
 	//set map position from cookie, if any
@@ -491,4 +491,10 @@ function getUrlVars() {
 		map[key] = value;
 	});
 	return map;
+}
+
+
+// Return a permalink to the current location and zoom level.
+function getPermalink(e,map) {
+    return location.protocol.concat("//").concat(window.location.host) + '/html/verkeersbordenkaart/index.php?lat='+ e.latlng.lat.toFixed(6) +'&lng='+ e.latlng.lng.toFixed(6) + '&z=' + map.getZoom() ;
 }
