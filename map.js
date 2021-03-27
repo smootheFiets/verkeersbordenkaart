@@ -74,6 +74,9 @@ var oms;
 * Initialize the map on page load
 */
 function initMap() {
+        // Save parameters from URL, if any
+        // (needs to happen before URL is manipulated in setMapCookie() )
+        const parms = getUrlVars();
 	//create map
 	map = L.map('map');
 	oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
@@ -114,9 +117,8 @@ function initMap() {
 	//modify some map controls
 	map.zoomControl.setPosition('topleft');
 	L.control.scale().addTo(map);
-        //set map position from url var
-        var parms = getUrlVars();
-        var centeratid = parms['id'];
+        //set map position from URL if passed
+        const centeratid = parms['id'];
 	if (typeof centeratid !== 'undefined') {
 	    centerMapAtId(centeratid);
 	}
@@ -317,7 +319,7 @@ function unloadMarkers(layer) {
 }
 
 /*
-* center map at location of provided id
+* center map at location of provided sign id
 */
 function centerMapAtId(id) {
 	//get coordinates from database
