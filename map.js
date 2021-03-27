@@ -92,9 +92,10 @@ function initMap() {
 	});
 	map.on('contextmenu', function(e) {
 	        console.log(e);
+	        var target = e.latlng;
 		L.popup()
-		.setLatLng(e.latlng)
-		.setContent('<h1>' + e.latlng.lat.toFixed(6) + ',' + e.latlng.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;layer=c&cbll=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p> <p><a href="' + getPermalink(e,map) + '" target="_blank">Permalink naar deze locatie</a></p>')
+		.setLatLng(target)
+		.setContent('<h1>' + target.lat.toFixed(6) + ',' + target.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + target.lat + ',' + target.lng + '&amp;layer=c&cbll=' + target.lat + ',' + target.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p> <p><a href="' + getPermalink(target,map) + '" target="_blank">Permalink naar deze locatie</a></p>')
 		.openOn(map);
 	})
 	//set map position from cookie, if any
@@ -348,6 +349,7 @@ function centerMapAtCoords(parms){
 
 /*
 * Set the cookie to remember map center, zoom, style and active layers
+* Also change URL in address bar to permalink w/ coordinates + zoom
 */
 function setMapCookie() {
 	var activeMapLayers = [];
@@ -356,7 +358,11 @@ function setMapCookie() {
 			activeMapLayers.push(layer);
 		}
 	});
-	Cookies.set('verkeersbordenkaart_map', [map.getCenter(), map.getZoom(), selectedMapStyle, activeMapLayers, selectedTileLayer], {expires: 1000});
+        const stateObj =  [map.getCenter(), map.getZoom(), selectedMapStyle, activeMapLayers, selectedTileLayer];
+        Cookies.set('verkeersbordenkaart_map', stateObj, {expires: 1000});
+        const permalink = getPermalink( map.getCenter(), map );
+        history.replaceState( stateObj, '', permalink);
+        // Should probably add treatment of stateObj for when users hit back button...
 }
 
 /*
@@ -495,6 +501,6 @@ function getUrlVars() {
 
 
 // Return a permalink to the current location and zoom level.
-function getPermalink(e,map) {
-    return location.protocol.concat("//").concat(window.location.host) + '/html/verkeersbordenkaart/index.php?lat='+ e.latlng.lat.toFixed(6) +'&lng='+ e.latlng.lng.toFixed(6) + '&z=' + map.getZoom() ;
+function getPermalink(center,map) {
+    return location.protocol.concat("//").concat(window.location.host) + '/html/verkeersbordenkaart/index.php?lat='+ center.lat.toFixed(9) +'&lng='+ center.lng.toFixed(9) + '&z=' + map.getZoom() ;
 }
