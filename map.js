@@ -122,7 +122,7 @@ function initMap() {
 	if (typeof centeratid !== 'undefined') {
 	    centerMapAtId(centeratid);
 	}
-        if ( (typeof parms['lat'] !== 'undefined') && (typeof parms['lng'] != 'undefined') ) {
+        if ( (typeof parms['lat'] !== 'undefined') && (typeof parms['lng'] != 'undefined') && (typeof parms['z']) !== 'undefined' ) {
 	    centerMapAtCoords(parms);
 	}
 }
@@ -323,16 +323,19 @@ function unloadMarkers(layer) {
 */
 function centerMapAtId(id) {
 	//get coordinates from database
-	$.getJSON('maplayer.php', { get: 'coordinates', id: id })
-	.done( function(json) {
-		////enable layer if necessary
-		//maplayers[json['layer']].active = true;
-		//$('#map-layer-' + json['layer']).prop('checked', true);
-		//updateMapLayers();
-	        //center map and set zoom
-		map.setView([json['latitude'], json['longitude']], 16);
-	        setMapCookie();
-	});
+	//$.getJSON('maplayer.php', { get: 'coordinates', id: id })
+	//.done( function(json) {
+	//	////enable layer if necessary
+	//	//maplayers[json['layer']].active = true;
+	//	//$('#map-layer-' + json['layer']).prop('checked', true);
+	//	//updateMapLayers();
+	//        //center map and set zoom
+	//	map.setView([json['latitude'], json['longitude']], 16);
+	//        setMapCookie();
+    //});
+    if ( Number.isInteger(parseInt(id)) ) {
+        openDetailsWindow( parseInt(id) );
+    }
 }
 
 /*
@@ -443,10 +446,14 @@ function openDetailsWindow(id) {
     $("#detailsdialog").parent().css({position : 'fixed'}).end().dialog('open');
     $.getJSON('maplayer.php', { data: 'details', id: id } )
     .done (function(json) {
+	map.setView(json.center,map.getZoom());
         $('#detailsdialog').html(json.html);
         $('#detailsdialog').dialog('option', 'title', json.title);
         //open map
         initMiniMap();
+        const permalink = getPermaSign( id );
+        history.replaceState( '', '', permalink);
+        // Didn't create (meaningful) stateObj, might need it in future
     })
     .fail( function() {
         $('#detailsdialog').html('Kan gegevens niet laden');
@@ -504,5 +511,15 @@ function getUrlVars() {
 
 // Return a permalink to the current location and zoom level.
 function getPermalink(center,map) {
-    return location.protocol.concat("//").concat(window.location.host) + '/html/verkeersbordenkaart/index.php?lat='+ center.lat.toFixed(9) +'&lng='+ center.lng.toFixed(9) + '&z=' + map.getZoom() ;
+    return baseURL() + '?lat='+ center.lat.toFixed(9) +'&lng='+ center.lng.toFixed(9) + '&z=' + map.getZoom() ;
+}
+
+// Return a permalink to the current traffic sign ID
+function getPermaSign( id ){
+    return baseURL() + '?id=' + id;
+}
+
+// Aux: URL of index.php
+function baseURL() {
+    return location.protocol.concat("//").concat(window.location.host) + '/html/verkeersbordenkaart/index.php';
 }

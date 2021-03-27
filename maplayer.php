@@ -67,7 +67,7 @@ if ($_GET['get'] == 'popup') {
 
 //details window
 elseif ($_GET['data'] == 'details') {
-	$json = array('html' => '', 'title' => '');
+        $json = array('html' => '', 'title' => '', 'center' => '');
 	//query om inhoud van tabel te selecteren
 	$qry = "SELECT *
 	FROM `verkeersborden`
@@ -79,6 +79,7 @@ elseif ($_GET['data'] == 'details') {
 	if (mysqli_num_rows($res) > 0) {
 		$html = '<div style="float:left; margin-left: 8px; max-width: calc(100% - 600px);">';
 		$data = mysqli_fetch_assoc($res);
+		$center = [ $data['location.wgs84.latitude'], $data['location.wgs84.longitude'] ];
 		$html .= '<img src="image.php?i=' . $data['rvv_code'] . '" style="max-width: 64px; max-height: 64px;">';
 		//tabel
 		$html .= '<table>';
@@ -118,6 +119,7 @@ elseif ($_GET['data'] == 'details') {
 		$html .= '<div style="clear:both;"></div>';
 
 		$json['html'] = $html;
+		$json['center'] = $center;
 		$json['title'] = htmlspecialchars('Verkeersbord ' . $data['id'] . ' - ' . $data['rvv_code']);
 	}
 	else {
