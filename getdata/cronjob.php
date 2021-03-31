@@ -58,14 +58,14 @@ else {
 	}
 }
 
-function curl_get_contents($url) {
+function curl_get_contents($url, $verifyPeer) {
 	$error = 0;
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_AUTOREFERER, TRUE);
 	curl_setopt($ch, CURLOPT_HEADER, FALSE);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $cfg_resource['CURLOPT_SSL_VERIFYPEER']);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verifyPeer);
 	curl_setopt($ch, CURLOPT_URL, $url);
 	$contents = curl_exec($ch);
 	if ($contents === FALSE) {
@@ -98,10 +98,11 @@ while(TRUE) {
 
 	//haal data van API
 	$url = $cfg_resource['API'];
+	$verifyPeer = $cfg_resource['CURLOPT_SSL_VERIFYPEER'];
 	if (!empty($updatestate)) {
 		$url .= '?offset=' . $updatestate['offset'];
 	}
-	$data = curl_get_contents($url);
+	$data = curl_get_contents($url, $verifyPeer);
 
 	//verwerk api error
 	if ($data[0] == 1) {
@@ -135,9 +136,22 @@ while(TRUE) {
 			//var_dump($item); exit;
 			//TODO check data contents
 
+			// Data to be sanitized (my PHP appears to be fussy)
+			if ($item->validated == 'n') 
+			   $item->validated=0;
+			else 
+			   $item->validated=1;
+			if ($item->user_id=='') $item->user_id=0;
+			if ($item->organisation_id=='') $item->organisation_id=0;
+			if ($item->location->road->wvk_id=='') $item->location->road->wvk_id=0;
+			if ($item->location->road->type=='') $item->location->road->type=0;			
+			if ($item->location->road->number=='') $item->location->road->number=0;			    // And here's to (my) MySQL not accepting ISO8601 dates:
+			$item->publication_timestamp_output=date_format(date_create($item->publication_timestamp), "Y-m-d H:i:s.v");
+
+
 			$contents = "`type` = '" . mysqli_real_escape_string($db['link'], $item->type) . "',
 			`schema_version` = '" . mysqli_real_escape_string($db['link'], $item->schema_version) . "',
-			`publication_timestamp` = '" . mysqli_real_escape_string($db['link'], $item->publication_timestamp) . "',
+			`publication_timestamp` = '" . mysqli_real_escape_string($db['link'], $item->publication_timestamp_output) . "',
 			`validated` = '" . mysqli_real_escape_string($db['link'], $item->validated) . "',
 			`validated_on` = " . date_to_db($item->validated_on) . ",
 			`user_id` = '" . mysqli_real_escape_string($db['link'], $item->user_id) . "',
@@ -167,7 +181,10 @@ while(TRUE) {
 				. $contents . 
 				" ON DUPLICATE KEY UPDATE "
 				. $contents;
-			mysqli_query($db['link'], $qry);
+			if (! mysqli_query($db['link'], $qry) ) {
+			   echo mysqli_error($db['link']), "\n";
+			   print "$qry\n\n";
+			}
 
 			//laatste publication_timestamp
 			if (preg_match('#\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z#', $item->publication_timestamp)) {

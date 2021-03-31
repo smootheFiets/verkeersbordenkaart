@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-include('dbconnect.inc.php');
+include('../dbconnect.inc.php');
 
 $qry = "SELECT * FROM `updatelog` ORDER BY `id` DESC LIMIT 1";
 $res = mysqli_query($db['link'], $qry);

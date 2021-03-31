@@ -42,14 +42,16 @@ URLs:
 
 # 2. Installatie
 
-De installatie maakt de databasetabellen aan. 
-Voer install.php uit vanuit een opdrachtregel. Als er nog 
+De installatie maakt de databasetabellen aan.
+Voor toegankelijkheid op de HTML-server dient het mapje verkeersbordenkaart
+naar /var/www/html/ gekopieërd te worden.
+Voer setup/install.php uit vanuit een opdrachtregel. Als er nog 
 geen configuratiebestand aanwezig is, wordt dit aangemaakt. Open dit 
 met een teksteditor en vul de juiste databasecredentials is. Voer 
 hierna install.php nogmaals uit om de databasetabellen aan te maken.
 
 Wanneer de installatie gereed is kunnen de tabellen worden gevuld. Voer 
-hiervoor cronjob.php uit. Er gelden timeouts zoals geconfigureerd in
+hiervoor getdata/cronjob.php uit. Er gelden timeouts zoals geconfigureerd in
 config.cfg.php. Afhankelijk van de ingestelde waarden moet cronjob.php
 meermaals worden uitgevoerd om de volledige dataset binnen te halen.
 
