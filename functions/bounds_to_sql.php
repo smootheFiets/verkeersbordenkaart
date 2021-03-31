@@ -22,6 +22,7 @@
 /*
 * function to check map's bbox string and convert to sql component
 * $bounds in format (str) southwest_lng,southwest_lat,northeast_lng,northeast_lat
+* Update 2021/03/08: make that a box (MBR) for speedy queries using spatial index
 */
 function bounds_to_sql($bounds) {
 	$bounds = explode(',', $bounds);
@@ -35,8 +36,8 @@ function bounds_to_sql($bounds) {
 	$lon_lower = min($bounds[0], $bounds[2]);
 	$lon_upper = max($bounds[0], $bounds[2]);
 	
-	//added location.wgs84. to field names
-	return ' `location.wgs84.latitude` BETWEEN '. $lat_lower . ' AND '. $lat_upper . ' 
-	AND `location.wgs84.longitude` BETWEEN '. $lon_lower . ' AND '. $lon_upper . ' ';
+	return ' MBRContains(GeomFromText( "LINESTRING(' . 
+           $lat_lower . ' ' . $lon_lower . ', ' . 
+	   $lat_upper . ' ' . $lon_upper . ')"), `wgs84`) ';
 }
 ?>
