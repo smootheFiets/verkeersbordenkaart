@@ -50,17 +50,24 @@ if ($_GET['get'] == 'popup') {
 		}
 		$html .= '</table>';
 		$data['heading'] = '0';
-		$html .= '<p><a id="popup_details">Details bekijken</a></p>';
-		$html .= '<p><a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p>';
+		$html .= '<p><a id="popup_details">Details bekijken</a></p> ';
+		$html .= '<p>Open locatie in <a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">OpenStreetMap</a>';
+		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
+		$html .= ', <a href="https://www.mapillary.com/app/?z=18&lat=' . $data['location.wgs84.latitude'] . '&lng=' . $data['location.wgs84.longitude'] . '" target="_blank">Mapillary</a>; ';
+		$html .= '<a href="https://' . $_SERVER['HTTP_HOST'] . '/html/verkeersbordenkaart/index.php?id=' .  $_GET['id'] . '" target="_blank">permalink naar dit bordje</a></p>';
+
+
+		$html .= '<p>Open locatie in <a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Google Street View&trade;</a></p>';
 		$json['html'] = $html;
 	}
 	else {
 		$json['html'] = '<p class="error">Geen detailinformatie gevonden' . $qry .'</p>';
 	}
 }
+
 //details window
 elseif ($_GET['data'] == 'details') {
-	$json = array('html' => '', 'title' => '');
+        $json = array('html' => '', 'title' => '', 'center' => '');
 	//query om inhoud van tabel te selecteren
 	$qry = "SELECT *
 	FROM `verkeersborden`
@@ -72,6 +79,7 @@ elseif ($_GET['data'] == 'details') {
 	if (mysqli_num_rows($res) > 0) {
 		$html = '<div style="float:left; margin-left: 8px; max-width: calc(100% - 600px);">';
 		$data = mysqli_fetch_assoc($res);
+		$center = [ $data['location.wgs84.latitude'], $data['location.wgs84.longitude'] ];
 		$html .= '<img src="image.php?i=' . $data['rvv_code'] . '" style="max-width: 64px; max-height: 64px;">';
 		//tabel
 		$html .= '<table>';
@@ -93,10 +101,16 @@ elseif ($_GET['data'] == 'details') {
 		//minimap
 		$html .= '<div style="float:left; margin-left: 8px;">';
 		$html .= '	<div id="minimap" style="width: 400px; height: 400px;"></div>';
-		
+
+		// OSM link
+		$html .= '<p>Open locatie in <a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">OpenStreetMap</a>';
+		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
+		$html .= ', <a href="https://www.mapillary.com/app/?z=18&lat=' . $data['location.wgs84.latitude'] . '&lng=' . $data['location.wgs84.longitude'] . '" target="_blank">Mapillary</a></p>';
 		//streetview link
 		$data['heading'] = '0';
-		$html .= '<p><a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p>';
+		$html .= '<p>Open locatie in <a href="https://www.google.nl/maps/?q=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;layer=c&cbll=' . $data['location.wgs84.latitude'] . ',' . $data['location.wgs84.longitude'] . '&amp;cbp=11,' . $data['heading'] . ',0,0,5" target="_blank">Google Street View&trade;</a></p>';
+		$html .= '<p><a href="https://' . $_SERVER['HTTP_HOST'] . '/html/verkeersbordenkaart/index.php?id=' .  $_GET['id'] . '" target="_blank">Permalink naar dit bordje</a></p>';
+		
 
 		//preview image
 		$html .= '<p><img src="' . $data['details.image'] . '" style="max-width: 400px; max-heigth: 400px;></p>';
@@ -105,6 +119,7 @@ elseif ($_GET['data'] == 'details') {
 		$html .= '<div style="clear:both;"></div>';
 
 		$json['html'] = $html;
+		$json['center'] = $center;
 		$json['title'] = htmlspecialchars('Verkeersbord ' . $data['id'] . ' - ' . $data['rvv_code']);
 	}
 	else {
@@ -134,6 +149,22 @@ else {
 		}
 	}
 }
+
+// for centerMapAtID
+if ($_GET['get'] == 'coordinates') {
+  $qry = "SELECT `location.wgs84.latitude` AS `latitude`, `location.wgs84.longitude` AS `longitude` FROM `verkeersborden`
+	WHERE `id` = '" . mysqli_real_escape_string($db['link'], $_GET['id']) . "'";
+  $qry .= " LIMIT 1";
+  //voer query uit
+  $res = mysqli_query($db['link'], $qry);  
+  while ($data = mysqli_fetch_assoc($res)) {
+    $json = array (
+		   latitude =>  (float) $data['latitude'],
+		   longitude=>  (float) $data['longitude'],
+		   );
+  }
+}
+
 
 header('Content-Type: application/json');
 echo json_encode($json);

@@ -59,7 +59,7 @@ meermaals worden uitgevoerd om de volledige dataset binnen te halen.
 # 3. Cronjob
 
 Het proces van het bijwerken van Verkeersbordenkaart kan geautomatiseerd 
-worden door middel van een cronjob. cronjob.php is ontworpen om ieder 
+worden door middel van een cronjob. cronjob.sh is ontworpen om ieder 
 uur te draaien en steeds een stukje bij te werken. Hierdoor kan het ook 
 gebruikt worden op shared hosting omgevingen met beperkte rekentijd. Om 
 de update in een keer uit te voeren kunnen de tijdlimieten in 
@@ -68,7 +68,7 @@ config.cfg.php worden aangepast.
 Voorbeeld crontab:
 ```crontab
 # verkeersbordenkaart update iedere uur op 47 minuten na het hele uur
-47 * * * * php -f /var/www/html/verkeersbordenkaart/cronjob.php > /var/www/html/verkeersbordenkaart/cronresult.txt
+47 * * * * /var/www/html/verkeersbordenkaart/cronjob.sh
 ```
 
 # 4. Licentie
@@ -85,7 +85,9 @@ volledige licentietekst in COPYING.
 
 
 Verkeersbordenkaart - Data uit NDW Verkeersborden API weergegeven op een kaart
-Copyright (C) 2020 Jasper Vries
+Copyright (C) 2020 Jasper Vries.  Aangepast in 2021 door
+OpenStreetMapper smootheFiets: vooral interface verbeteringen voor
+collega mapper's.
 
 Verkeersbordenkaart is free software: you can redistribute it and/or 
 modify it under the terms of version 3 of the GNU General Public 
@@ -103,4 +105,5 @@ along with Verkeersbordenkaart. If not, see <http://www.gnu.org/licenses/>.
 # 5. Verkrijgen van de broncode
 
 De broncode van Verkeersbordenkaart is gepubliceerd op GitHub.
-https://github.com/jaspervries/verkeersbordenkaart
+https://github.com/jaspervries/verkeersbordenkaart (originele versie)
+https://github.com/smootheFiets/verkeersbordenkaart (OSM versie)

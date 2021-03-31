@@ -153,8 +153,6 @@ while(TRUE) {
 			$text255 = '"' . substr($text255,0,253) . '"';
 			// location.side is sometimes 'bord.schouw onbekend', setting to 'X' (one-char limit)
 			if (strlen( $item->location->side ) > 1) $item->location->side='X';
-			if ($item->location->road->number=='') $item->location->road->number=0;			    // And here's to (my) MySQL not accepting ISO8601 dates:
-			$item->publication_timestamp_output=date_format(date_create($item->publication_timestamp), "Y-m-d H:i:s.v");
 
 			$contents = "`type` = '" . mysqli_real_escape_string($db['link'], $item->type) . "',
 			`schema_version` = '" . mysqli_real_escape_string($db['link'], $item->schema_version) . "',

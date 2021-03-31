@@ -74,6 +74,9 @@ var oms;
 * Initialize the map on page load
 */
 function initMap() {
+        // Save parameters from URL, if any
+        // (needs to happen before URL is manipulated in setMapCookie() )
+        const parms = getUrlVars();
 	//create map
 	map = L.map('map');
 	oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
@@ -91,10 +94,11 @@ function initMap() {
 		updateMapLayers();
 	});
 	map.on('contextmenu', function(e) {
-		console.log(e);
+	        console.log(e);
+	        var target = e.latlng;
 		L.popup()
-		.setLatLng(e.latlng)
-		.setContent('<h1>' + e.latlng.lat.toFixed(6) + ',' + e.latlng.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;layer=c&cbll=' + e.latlng.lat + ',' + e.latlng.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p>')
+		.setLatLng(target)
+		.setContent('<h1>' + target.lat.toFixed(6) + ',' + target.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + target.lat + ',' + target.lng + '&amp;layer=c&cbll=' + target.lat + ',' + target.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p> <p><a href="' + getPermalink(target,map) + '" target="_blank">Permalink naar deze locatie</a></p>')
 		.openOn(map);
 	})
 	//set map position from cookie, if any
@@ -113,10 +117,13 @@ function initMap() {
 	//modify some map controls
 	map.zoomControl.setPosition('topleft');
 	L.control.scale().addTo(map);
-	//set map position from url var
-	var centeratid = getUrlVars()['id'];
+        //set map position from URL if passed
+        const centeratid = parms['id'];
 	if (typeof centeratid !== 'undefined') {
-		centerMapAtId(centeratid);
+	    centerMapAtId(centeratid);
+	}
+        if ( (typeof parms['lat'] !== 'undefined') && (typeof parms['lng'] != 'undefined') && (typeof parms['z']) !== 'undefined' ) {
+	    centerMapAtCoords(parms);
 	}
 }
 
@@ -312,24 +319,36 @@ function unloadMarkers(layer) {
 }
 
 /*
-* center map at location of provided id
+* center map at location of provided sign id
 */
 function centerMapAtId(id) {
 	//get coordinates from database
-	$.getJSON('maplayer.php', { get: 'coordinates', id: id })
-	.done( function(json) {
-		//enable layer if necessary
-		maplayers[json['layer']].active = true;
-		$('#map-layer-' + json['layer']).prop('checked', true);
-		updateMapLayers();
-		//center map and set zoom
-		map.setView([json['latitude'], json['longitude']], 16);
-		setMapCookie();
-	});
+	//$.getJSON('maplayer.php', { get: 'coordinates', id: id })
+	//.done( function(json) {
+	//	////enable layer if necessary
+	//	//maplayers[json['layer']].active = true;
+	//	//$('#map-layer-' + json['layer']).prop('checked', true);
+	//	//updateMapLayers();
+	//        //center map and set zoom
+	//	map.setView([json['latitude'], json['longitude']], 16);
+	//        setMapCookie();
+    //});
+    if ( Number.isInteger(parseInt(id)) ) {
+        openDetailsWindow( parseInt(id) );
+    }
+}
+
+/*
+* center map at coordinates passed in URL
+*/
+function centerMapAtCoords(parms){
+    map.setView([ parseFloat(parms['lat']), parseFloat(parms['lng']) ], Math.round(parseFloat(parms['z'])));
+    setMapCookie();
 }
 
 /*
 * Set the cookie to remember map center, zoom, style and active layers
+* Also change URL in address bar to permalink w/ coordinates + zoom
 */
 function setMapCookie() {
 	var activeMapLayers = [];
@@ -338,7 +357,11 @@ function setMapCookie() {
 			activeMapLayers.push(layer);
 		}
 	});
-	Cookies.set('verkeersbordenkaart_map', [map.getCenter(), map.getZoom(), selectedMapStyle, activeMapLayers, selectedTileLayer], {expires: 1000});
+        const stateObj =  [map.getCenter(), map.getZoom(), selectedMapStyle, activeMapLayers, selectedTileLayer];
+        Cookies.set('verkeersbordenkaart_map', stateObj, {expires: 1000});
+        const permalink = getPermalink( map.getCenter(), map );
+        history.replaceState( stateObj, '', permalink);
+        // Should probably add treatment of stateObj for when users hit back button...
 }
 
 /*
@@ -417,10 +440,14 @@ function openDetailsWindow(id) {
     $("#detailsdialog").parent().css({position : 'fixed'}).end().dialog('open');
     $.getJSON('maplayer.php', { data: 'details', id: id } )
     .done (function(json) {
+	map.setView(json.center,map.getZoom());
         $('#detailsdialog').html(json.html);
         $('#detailsdialog').dialog('option', 'title', json.title);
         //open map
         initMiniMap();
+        const permalink = getPermaSign( id );
+        history.replaceState( '', '', permalink);
+        // Didn't create (meaningful) stateObj, might need it in future
     })
     .fail( function() {
         $('#detailsdialog').html('Kan gegevens niet laden');
@@ -473,4 +500,20 @@ function getUrlVars() {
 		map[key] = value;
 	});
 	return map;
+}
+
+
+// Return a permalink to the current location and zoom level.
+function getPermalink(center,map) {
+    return baseURL() + '?lat='+ center.lat.toFixed(9) +'&lng='+ center.lng.toFixed(9) + '&z=' + map.getZoom() ;
+}
+
+// Return a permalink to the current traffic sign ID
+function getPermaSign( id ){
+    return baseURL() + '?id=' + id;
+}
+
+// Aux: URL of index.php
+function baseURL() {
+    return location.protocol.concat("//").concat(window.location.host) + '/html/verkeersbordenkaart/index.php';
 }
