@@ -383,7 +383,8 @@ function initLayerGUI() {
 			}
 		}
 		else {
-			maplayers[layer] = {active: false};
+		    maplayers[layer] = {active: true};
+		    $('#map-layer-' + layer).prop('checked', true);
 		}
 	});
 	$('#map-layers input[type=checkbox]').change( function() {
