@@ -29,6 +29,14 @@ var selectedMapStyle = 'map-style-lighter';
 var selectedTileLayer = 0;
 var tileLayers = [
 	{
+		name: 'OpenStreetMap',
+		layer: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		    minZoom: 6,
+		    maxZoom: 19
+		})
+	},
+	{
 		name: 'BRT Achtergrondkaart',
 		layer: L.tileLayer('https://geodata.nationaalgeoregister.nl/tiles/service/wmts/brtachtergrondkaart/EPSG:3857/{z}/{x}/{y}.png', {
 			minZoom: 6,
@@ -44,12 +52,6 @@ var tileLayers = [
 			maxZoom: 19,
 			bounds: [[50.5, 3.25], [54, 7.6]],
 			attribution: 'Kaartgegevens &copy; <a href="https://www.kadaster.nl">Kadaster</a>'
-		})
-	},
-	{
-		name: 'OpenStreetMap',
-		layer: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 		})
 	},
 	{
@@ -110,7 +112,7 @@ function initMap() {
 	}
 	else {
 		//set initial map view
-		map.setView([51.9918383,4.2139163],10);
+	        map.setView([53.21129,6.56422],17);
 	}
 	//set tile layer
 	setMapTileLayer(selectedTileLayer);
