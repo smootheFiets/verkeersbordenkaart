@@ -100,7 +100,7 @@ function initMap() {
 	        var target = e.latlng;
 		L.popup()
 		.setLatLng(target)
-		.setContent('<h1>' + target.lat.toFixed(6) + ',' + target.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + target.lat + ',' + target.lng + '&amp;layer=c&cbll=' + target.lat + ',' + target.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p> <p><a href="' + getPermalink(target,map) + '" target="_blank">Permalink naar deze locatie</a></p>')
+		.setContent('<h1>' + target.lat.toFixed(6) + ',' + target.lng.toFixed(6) + '</h1><p><a href="https://www.google.nl/maps/?q=' + target.lat + ',' + target.lng + '&amp;layer=c&cbll=' + target.lat + ',' + target.lng + '&amp;cbp=11,' + 0 + ',0,0,5" target="_blank">Open locatie in Google Street View&trade;</a></p> <p><a href="' + getPermalink(target,map) + '" target="_blank">Permalink naar deze locatie</a></p> <p><a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' + target.lng + '&bottom=' + target.lat + '&right=' + target.lng + '&top='  + target.lat + '" target="hiddenIframe">JOSM remote-control</a></p>')
 		.openOn(map);
 	})
 	//set map position from cookie, if any
