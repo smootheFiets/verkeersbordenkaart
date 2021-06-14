@@ -52,7 +52,7 @@ if ($_GET['get'] == 'popup') {
 		$data['heading'] = '0';
 		$html .= '<p><a id="popup_details">Details bekijken</a></p> ';
 		$html .= '<p>Open locatie in <a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">OpenStreetMap</a>';
-		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
+		$html .= ', (<a href="http://127.0.0.1:8111/zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
 		$html .= ', <a href="https://www.mapillary.com/app/?z=18&lat=' . $data['location.wgs84.latitude'] . '&lng=' . $data['location.wgs84.longitude'] . '" target="_blank">Mapillary</a>; ';
 		$html .= '<a href="https://' . $_SERVER['HTTP_HOST'] . '/html/verkeersbordenkaart/index.php?id=' .  $_GET['id'] . '" target="_blank">permalink naar dit bordje</a></p>';
 
@@ -104,7 +104,7 @@ elseif ($_GET['data'] == 'details') {
 
 		// OSM link
 		$html .= '<p>Open locatie in <a href="https://www.openstreetmap.org/#map=18/' . $data['location.wgs84.latitude'] .'/' . $data['location.wgs84.longitude'] . '" target="_blank">OpenStreetMap</a>';
-		$html .= ', (<a href="https://osmose.openstreetmap.fr/en/josm_proxy?zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
+		$html .= ', (<a href="http://127.0.0.1:8111/zoom?left=' . $data['location.wgs84.longitude'] . '&bottom=' . $data['location.wgs84.latitude'] . '&right=' .  $data['location.wgs84.longitude'] . '&top=' . $data['location.wgs84.latitude'] . '" target="hiddenIframe">JOSM remote-control</a>)';
 		$html .= ', <a href="https://www.mapillary.com/app/?z=18&lat=' . $data['location.wgs84.latitude'] . '&lng=' . $data['location.wgs84.longitude'] . '" target="_blank">Mapillary</a></p>';
 		//streetview link
 		$data['heading'] = '0';
