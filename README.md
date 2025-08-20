@@ -1,3 +1,8 @@
+Dit project is gearchiveerd.
+Er is tegenwoordig vanuit NDW zelf een viewer beschikbaar:
+https://wegkenmerken.ndw.nu/verkeersborden
+
+
 # Verkeersbordenkaart
 Data uit NDW Verkeersborden API weergegeven op een kaart
 
