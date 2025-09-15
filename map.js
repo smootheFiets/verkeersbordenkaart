@@ -47,7 +47,7 @@ var tileLayers = [
 	},
 	{
 		name: 'Luchtfoto Actueel Ortho 8cm RGB',
-		layer: L.tileLayer('https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{zoom}/{x}/{y}.jpeg', {
+		layer: L.tileLayer('https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{z}/{x}/{y}.jpeg', {
 			minZoom: 6,
 			maxZoom: 21,
 			bounds: [[50.5, 3.25], [54, 7.6]],
